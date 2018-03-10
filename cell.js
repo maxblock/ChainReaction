@@ -1,6 +1,6 @@
 var Cell = function () {
     direction = 0;
-    console.log("Created a cell");
+    is_disturbed = false;
 
     // Randomises the direction
     var randomise = function() {
@@ -8,8 +8,18 @@ var Cell = function () {
         return direction;
     }
 
+    // Rotates the cell one quarter turn
+    var rotate = function() {
+        this.direction += 1;
+        this.direction %= 4;
+    }
+
+    randomise();
+
     return {
-        randomise: function() { return randomise(); },
+        randomise: randomise,
+        rotate: rotate,
         direction: this.direction,
+        is_disturbed: is_disturbed,
     }
 };

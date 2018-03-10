@@ -1,6 +1,7 @@
 var Grid = function (gridElement, Cell) {
-    var height = 10;
-    var width = 10;
+    const DEBUG = true;
+    var height = 3;
+    var width = 3;
     cells = new Array(height);
 
     var init = function() {
@@ -26,8 +27,40 @@ var Grid = function (gridElement, Cell) {
         }
     }
 
+    // Prints the grid to console.
+    var print = function() {
+        for (var i = 0; i < height; i++) {
+            const reducer = (accumulator, currentValue) => accumulator + " " + currentValue.direction;
+            console.log(cells[i].reduce(reducer, ""));
+        }
+    }
+
+    var neighbours_of = function(row, col) {
+
+    }
+
+    var step = function() {
+        // Foreach disturbed cell, rotate the cell and disturb neighbours
+        for (var i = 0; i < height; i++) {
+            for (var j = 0; j < width; j++) {
+                var cell = cells[i][j];
+                if (cell.is_disturbed) {
+                    cell.is_disturbed = false;
+                    cell.rotate();
+                    //TODO: Disturb neighbours
+                }
+            }
+        }
+
+        if (DEBUG) {
+            print();
+        }
+    }
+
     init();
-    randomise();
+    if (DEBUG) {
+        print();
+    }
 
     return {
         init: function() { return init(); },
