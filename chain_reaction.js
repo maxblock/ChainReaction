@@ -1,11 +1,7 @@
-var ChainReaction = function (grid) {
+var ChainReaction = function (grid, Cell) {
+
 
     function init(grid) {
-        for (i = 0; i < height; i++) {
-            for (j = 0; j < width; j++) {
-                console.log(i,j);
-            }
-        }
         console.log("Hello world!");
     }
 
