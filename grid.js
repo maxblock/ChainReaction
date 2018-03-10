@@ -1,15 +1,15 @@
 var Grid = function (gridElement, Cell) {
     const DEBUG = true;
-    var height = 3;
-    var width = 3;
+    var height = 10;
+    var width = 10;
     cells = new Array(height);
 
-    var init = function() {
+    var init = function () {
         // Initialise the grid
         for (var i = 0; i < height; i++) {
             cells[i] = new Array(width);
         }
-    
+
         // create the cells
         for (var i = 0; i < height; i++) {
             for (var j = 0; j < width; j++) {
@@ -22,7 +22,7 @@ var Grid = function (gridElement, Cell) {
     }
 
     // Randomises the direction of all cells in the grid
-    var randomise = function() {
+    var randomise = function () {
         for (var i = 0; i < height; i++) {
             for (var j = 0; j < width; j++) {
                 cells[i][j].randomise();
@@ -31,17 +31,17 @@ var Grid = function (gridElement, Cell) {
     }
 
     // Prints the grid to console.
-    var print = function() {
+    var print = function (disturbed_only = false) {
         for (var i = 0; i < height; i++) {
-            const reducer = (accumulator, currentValue) => accumulator + " " + currentValue.direction;
-            console.log(cells[i].reduce(reducer, ""));
+            const reducer = (accumulator, currentValue) => accumulator + ((disturbed_only && currentValue.is_disturbed == false) ? "  " : currentValue.print());
+            console.log("｜" + cells[i].reduce(reducer, "") + "｜");
         }
         console.log(is_unstable() ? "UNSTABLE" : "STABLE");
         console.log("");
     }
 
     // Indicates that there is a disturbed cell
-    var is_unstable = function() {
+    var is_unstable = function () {
         for (var i = 0; i < height; i++) {
             for (var j = 0; j < width; j++) {
                 if (cells[i][j].is_disturbed) {
@@ -52,55 +52,85 @@ var Grid = function (gridElement, Cell) {
         return false;
     }
 
-    var disturbed_neighbours_of = function(row, col) {
+    // Given row and column indices, returns an array of the disturbed neighbours
+    var disturbed_neighbours = function (row, col) {
         var ret = Array();
-        
-        for (var i = -1; i <= 1; i++) {
-            for (var j = -1; j <= 1; j++) {
-                if (i == 0 || j == 0) {
-                    continue;
-                }
+        var cell = cells[row][col];
+        //console.log("row",row,"col",col,"direction:",cell.direction,"up",cell.points_up(),"down",cell.points_down(),"left",cell.points_left(),"right",cell.points_right(),cell.print())
 
-                if (row + i >= 0 && row + i < height && col + j >= 0 && col + j < height) {
-                    ret.push(cells[row][col]);
-                }
-            }
+        // Upstairs
+        if (row > 0 && cell.points_up() === true && cells[row - 1][col].points_down() === true) {
+            ret.push(cells[row - 1][col]);
         }
 
+        // Downstairs
+        if (row + 1 < height && cell.points_down() === true && cells[row + 1][col].points_up() === true) {
+            ret.push(cells[row + 1][col]);
+        }
+
+        // Left
+        if (col > 0 && cell.points_left() === true && cells[row][col - 1].points_right() === true) {
+            ret.push(cells[row][col - 1]);
+        }
+
+        // Right
+        if (col + 1 < width && cell.points_right() === true && cells[row][col + 1].points_left() === true) {
+            ret.push(cells[row][col + 1]);
+        }
         return ret;
     }
 
-    // Indicates that the direction of the first disturbs the second
-    var direction_disturbs = function(d1, d2) {
-
-    }
-
-    var step = function() {
-        // Foreach disturbed cell, rotate the cell and disturb neighbours
+    // Foreach disturbed cell, rotate the cell and disturb neighbours
+    var step = function () {
+        // Find out which cells where disturbed
+        var disturbed = Array();
         for (var i = 0; i < height; i++) {
             for (var j = 0; j < width; j++) {
-                var cell = cells[i][j];
-                if (cell.is_disturbed) {
-                    cell.is_disturbed = false;
-                    cell.rotate();
-                    disturbed_neighbours_of(i, j).forEach(neighbour => {
-                        neighbour.is_disturbed = true;
-                    });
+                if (cells[i][j].is_disturbed) {
+                    disturbed.push({ row: i, col: j });
+                    cells[i][j].is_disturbed = false;
                 }
             }
         }
 
+        // Rotate the cells
+        disturbed.forEach(location => {
+            cells[location.row][location.col] = cells[location.row][location.col].rotate();
+            var cell = cells[location.row][location.col];
+            //console.log("row",location.row,"col",location.col,"direction:",cell.direction,"up",cell.points_up(),"down",cell.points_down(),"left",cell.points_left(),"right",cell.points_right(),cell.print())
+        });
+
         if (DEBUG) {
+            console.log("After rotation");
             print();
+        }
+
+        // Foreach rotated cells, disturb the neighbours
+        disturbed.forEach(location => {
+            disturbed_neighbours(location.row, location.col).forEach(neighbour => {
+                neighbour.is_disturbed = true;
+            });
+        });
+
+        if (DEBUG) {
+            console.log("Disturbed values");
+            print(true);
         }
     }
 
     init();
-    cells[0][1].is_disturbed = true;
-    step();
+    cells[0][0].is_disturbed = true;
+
+
+    for (var i = 0; i < 10; i++) {
+        if (is_unstable() == false) {
+            break;
+        }
+        step();
+    }
 
     return {
-        init: function() { return init(); },
-        randomise: function() { return randomise(); }
+        init: function () { return init(); },
+        randomise: function () { return randomise(); }
     }
 };
