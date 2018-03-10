@@ -1,0 +1,6 @@
+var Cell = function () {
+
+    return {
+
+    }
+}();

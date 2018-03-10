@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: powderblue;
+        }
+
+        #grid {
+            width: 50vw;
+            align-self: auto;
+            background-color: white;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, 1fr);
+        }
+
+        .cell {
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="grid"></div>
+</body>
+
+<script type="text/javascript" src="cell.js"></script>
+<script type="text/javascript" src="grid.js"></script>
+<script type="text/javascript" src="chain_reaction.js"></script>
+<script type="text/javascript">
+    var grid = Grid(document.getElementById("grid"));
+    var chain_reaction = ChainReaction(grid);
+    chain_reaction.init();
+</script>
+
+</html>
