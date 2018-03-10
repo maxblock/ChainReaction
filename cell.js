@@ -1,44 +1,67 @@
-var Cell = function () {
+/**
+ * 
+ * @param {*} cellElement An HTML element to render the Cell in.
+ */
+var Cell = function (cellElement) {
     /*
     * 0 -- left and up
     * 1 -- up and right
     * 2 -- right and down
     * 3 -- down and left
     */
-    direction = 0;
-    is_disturbed = false;
+    var direction = 0;
+    var is_disturbed = false;
 
-    // Randomises the direction
-    var randomise = function () {
-        this.direction = Math.floor(Math.random() * 4);
-        return this.direction;
+    /**
+     * Randomises the direction for the cell.
+     */
+    function randomise() {
+        direction = Math.floor(Math.random() * 4);
+        return direction;
     }
 
-    // Rotates the cell one quarter turn
-    var rotate = function () {
-        this.direction += 1;
-        this.direction %= 4;
-        return this;
+    /**
+     * Rotates the cell one quarter turn
+     */
+    function rotate() {
+        direction += 1;
+        direction %= 4;
+        render();
     }
 
+    /**
+     * Indicates that the cell points up.
+     */
     function points_up() {
-        return this.direction == 0 || this.direction == 1;
+        return direction == 0 || direction == 1;
     }
 
+    /**
+     * Indicates that the cell points down.
+     */
     function points_down() {
-        return this.direction == 2 || this.direction == 3;
+        return direction == 2 || direction == 3;
     }
 
+    /**
+     * Indicates that the cell points left.
+     */
     function points_left() {
-        return this.direction == 0 || this.direction == 3;
+        return direction == 0 || direction == 3;
     }
 
+    /**
+     * Indicates that the cell points right.
+     */
     function points_right() {
-        return this.direction == 1 || this.direction == 2;
+        return direction == 1 || direction == 2;
     }
 
-    var print = function () {
-        switch (this.direction) {
+    /**
+     * Returns a text representation of the cell.
+     */
+    function print() {
+        switch (direction) {
             case 0:
                 return '◴';
             case 1:
@@ -48,11 +71,20 @@ var Cell = function () {
             case 3:
                 return '◵';
             default:
+                console.error("Invalid direction:", direction)
                 break;
         }
     }
 
+    /**
+     * Renders the Cell in the given HTML element.
+     */
+    function render() {
+        cellElement.innerHTML = print();
+    }
+
     randomise();
+    render();
 
     return {
         randomise: randomise,
@@ -64,5 +96,6 @@ var Cell = function () {
         is_disturbed: is_disturbed,
         print: print,
         direction: direction,
+        render: render,
     }
 };

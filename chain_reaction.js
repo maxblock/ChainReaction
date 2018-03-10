@@ -1,10 +1,17 @@
-var ChainReaction = function (grid, Cell) {
+var ChainReaction = function (Grid, gridElement, Cell, counterElement) {
+    var gridChangedCallback = function () {
+        var counter = 0;
+        counterElement.innerHTML = counter;
+        var interval = setInterval(step, 200);
 
-
-    function init(grid) {
+        function step() {
+            if (grid.is_unstable()) {
+                counter += grid.step();
+                counterElement.innerHTML = counter;
+            } else {
+                clearInterval(interval);
+            }
+        }
     }
-
-    return {
-        init: function () { return init(grid) },
-    }
+    var grid = Grid(gridElement, Cell, gridChangedCallback);
 };

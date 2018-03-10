@@ -8,38 +8,37 @@
             box-sizing: border-box;
         }
 
-        body {
-            background-color: powderblue;
-        }
-
         #grid {
-            width: 50vw;
-            align-self: auto;
-            background-color: white;
-        }
-
-        .row {
+            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, 1fr);
         }
 
+        .row {}
+
         .cell {
-            background-color: black;
+            float: left;
+            height: 2vh;
+            width: 2vh;
+            color: #666;
+            font-size: 2vh;
+            align-content: center;
+            cursor: pointer;
+            margin: -.2vh;
         }
     </style>
 </head>
 
 <body>
     <div id="grid"></div>
+    <h1 id="counter"></h1>
 </body>
 
 <script type="text/javascript" src="cell.js"></script>
 <script type="text/javascript" src="grid.js"></script>
 <script type="text/javascript" src="chain_reaction.js"></script>
 <script type="text/javascript">
-    var grid = Grid(document.getElementById("grid"), Cell);
-    var chain_reaction = ChainReaction(grid);
-    chain_reaction.init();
+    var chain_reaction = ChainReaction(Grid, document.getElementById("grid"), Cell, document.getElementById("counter"));
 </script>
 
 </html>
