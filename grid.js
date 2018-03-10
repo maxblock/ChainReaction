@@ -4,6 +4,7 @@
  * @param {*} Cell A constructor for Cell.
  * @param {*} callback A callback to call when a cell has been clicked.
  */
+var Grid = function (gridElement, Cell, callback, height, width) {
     const DEBUG = false;
     cells = new Array(height);
 
