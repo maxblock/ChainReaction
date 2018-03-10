@@ -1,4 +1,4 @@
-var ChainReaction = function (Grid, gridElement, Cell, counterElement) {
+var ChainReaction = function (Grid, gridElement, Cell, counterElement, height = 50, width = 100) {
     var gridChangedCallback = function () {
         var counter = 0;
         counterElement.innerHTML = counter;
@@ -13,5 +13,5 @@ var ChainReaction = function (Grid, gridElement, Cell, counterElement) {
             }
         }
     }
-    var grid = Grid(gridElement, Cell, gridChangedCallback);
+    var grid = Grid(gridElement, Cell, gridChangedCallback, height, width);
 };

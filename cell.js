@@ -80,10 +80,28 @@ var Cell = function (cellElement) {
      * Renders the Cell in the given HTML element.
      */
     function render() {
-        cellElement.innerHTML = print();
+        cellElement.classList.remove("north", "east", "south", "west");
+        switch (direction) {
+            case 0:
+                cellElement.classList.add("north");
+                break;
+            case 1:
+                cellElement.classList.add("east");
+                break;
+            case 2:
+                cellElement.classList.add("south");
+                break;
+            case 3:
+                cellElement.classList.add("west");
+                break;
+            default:
+                console.error("Invalid direction:", direction)
+                break;
+        }
     }
 
     randomise();
+    //cellElement.innerHTML = 'x';
     render();
 
     return {

@@ -8,37 +8,63 @@
             box-sizing: border-box;
         }
 
+        body {
+            background-color: #FFF;
+        }
+
         #grid {
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, 1fr);
+            float: left;
         }
-
-        .row {}
 
         .cell {
             float: left;
-            height: 2vh;
-            width: 2vh;
-            color: #666;
-            font-size: 2vh;
+            height: 5vh;
+            width: 5vh;
+            color: white;
+            font-size: 5vh;
             align-content: center;
             cursor: pointer;
-            margin: -.2vh;
+            background-image: url("cat.png");
+            background-size: contain;
+        }
+
+        .north {
+            transition-duration: .2s;
+            transform: rotate(-45deg);
+        }
+
+        .east {
+            transition-duration: .2s;
+            transform: rotate(45deg);
+        }
+        .south {
+            transition-duration: .2s;
+            transform: rotate(135deg);
+        }
+        .west {
+            transition-duration: .2s;
+            transform: rotate(225deg);
+        }
+
+        #counter {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
         }
     </style>
 </head>
 
 <body>
     <div id="grid"></div>
-    <h1 id="counter"></h1>
+    <div id="counter"></h1>
 </body>
 
 <script type="text/javascript" src="cell.js"></script>
 <script type="text/javascript" src="grid.js"></script>
 <script type="text/javascript" src="chain_reaction.js"></script>
 <script type="text/javascript">
-    var chain_reaction = ChainReaction(Grid, document.getElementById("grid"), Cell, document.getElementById("counter"));
+    var chain_reaction = ChainReaction(Grid, document.getElementById("grid"), Cell, document.getElementById("counter"), 19, 33);
 </script>
 
 </html>
