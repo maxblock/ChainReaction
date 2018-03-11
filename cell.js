@@ -80,6 +80,7 @@ var Cell = function (cellElement) {
      * Renders the Cell in the given HTML element.
      */
     function render() {
+        cellElement.classList.add("disturbed");
         cellElement.classList.remove("north", "east", "south", "west");
         switch (direction) {
             case 0:
@@ -98,6 +99,8 @@ var Cell = function (cellElement) {
                 console.error("Invalid direction:", direction)
                 break;
         }
+        setTimeout( function() {cellElement.classList.remove("disturbed");}, 200 );
+        
     }
 
     randomise();

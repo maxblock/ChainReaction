@@ -23,11 +23,12 @@
             float: left;
             height: 5vh;
             width: 5vh;
-            color: white;
             font-size: 5vh;
             align-content: center;
             cursor: pointer;
             background-image: url("cat.png");
+            opacity: .4;
+            transition-duration: .1s;
             background-size: contain;
         }
 
@@ -47,6 +48,11 @@
         .west {
             transition-duration: .2s;
             transform: rotate(225deg);
+        }
+
+        .disturbed {
+            opacity: 1;
+            transition-duration: .1s;
         }
 
         #counter {
